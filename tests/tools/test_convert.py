@@ -5,7 +5,7 @@ from typing import Any, Dict
 
 import pytest
 
-from fotoobo.exceptions import GeneralError
+from fotoobo.exceptions import FotooboError
 from fotoobo.tools.convert import checkpoint
 
 
@@ -78,8 +78,8 @@ def test_convert(asset_type: str) -> None:
     ),
 )
 def test_convert_unsupported_type(asset_type: str) -> None:
-    """Test convert for unsupported types (which rise a GeneralError exception)"""
-    with pytest.raises(GeneralError, match=r"type '.*' is not supported to convert"):
+    """Test convert for unsupported types (which rise a FotooboError exception)"""
+    with pytest.raises(FotooboError, match=r"type '.*' is not supported to convert"):
         checkpoint([], "", asset_type)
 
 

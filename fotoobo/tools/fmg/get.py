@@ -4,7 +4,7 @@ FortiManager get ADOMs utility
 import logging
 from typing import Any, Dict, List, Optional, Union
 
-from fotoobo.exceptions.exceptions import GeneralError
+from fotoobo.exceptions.exceptions import FotooboError
 from fotoobo.helpers.config import config
 from fotoobo.helpers.result import Result
 from fotoobo.inventory import Inventory
@@ -134,7 +134,7 @@ def policy(
         code = data["result"][0]["status"]["code"]
         message = data["result"][0]["status"]["message"]
         log.error("FortiManager '%s' returned '%s': '%s'", host, code, message)
-        raise GeneralError(f"FortiManager {host} returned {code}: {message}")
+        raise FotooboError(f"FortiManager {host} returned {code}: {message}")
 
     policies = []
     for pol in data["result"][0]["data"]:

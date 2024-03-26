@@ -7,7 +7,7 @@ from typing import Any, List
 
 import typer
 
-from fotoobo.exceptions import GeneralError, GeneralWarning
+from fotoobo.exceptions import FotooboError, FotooboWarning
 from fotoobo.fortinet.fortigate_config import FortiGateConfig
 from fotoobo.fortinet.fortigate_config_check import FortiGateConfigCheck
 from fotoobo.fortinet.fortigate_info import FortiGateInfo
@@ -28,8 +28,8 @@ def check(config: Path, bundles: Path) -> Result[List[str]]:
         bundles: The check bundle to check the configuration against
 
     Raises:
-        GeneralWarning: GeneralWarning
-        GeneralError:   GeneralError
+        FotooboWarning: If there is no configuration file to check
+        FotooboError:   If the configuration file cannot be read
     """
     files: List[Path] = []
     config = Path(config)
@@ -46,7 +46,7 @@ def check(config: Path, bundles: Path) -> Result[List[str]]:
 
     if not files:
         log.warning("There are no configuration files to check")
-        raise GeneralWarning("There are no configuration files to check")
+        raise FotooboWarning("There are no configuration files to check")
 
     bundles = Path(bundles)
     if bundles.is_file():
@@ -54,7 +54,7 @@ def check(config: Path, bundles: Path) -> Result[List[str]]:
 
     else:
         log.error("No valid bundle file")
-        raise GeneralError("No valid bundle file")
+        raise FotooboError("No valid bundle file")
 
     total_results: int = 0
     result = Result[List[str]]()
@@ -64,7 +64,7 @@ def check(config: Path, bundles: Path) -> Result[List[str]]:
             fortigate_config = FortiGateConfig.parse_configuration_file(file)
             conf_check = FortiGateConfigCheck(fortigate_config, checks, result)
 
-        except GeneralWarning as warn:
+        except FotooboWarning as warn:
             log.warning(warn.message)
             continue
 
@@ -94,7 +94,7 @@ def get(config: Path, scope: str = "", path: str = "") -> Result[FortiGateInfo]:
         Configuration as result object
 
     Raises:
-        GeneralWarning: GeneralWarning
+        FotooboWarning: FotooboWarning
     """
     files: List[Path] = []
     if config.is_file():
@@ -106,7 +106,7 @@ def get(config: Path, scope: str = "", path: str = "") -> Result[FortiGateInfo]:
 
     if not files:
         log.warning("There are no configuration files")
-        raise GeneralWarning("There are no configuration files")
+        raise FotooboWarning("There are no configuration files")
 
     result = Result[Any]()
 
@@ -130,7 +130,7 @@ def info(config: Path) -> Result[FortiGateInfo]:
         FortiGate information as result object
 
     Raises:
-        GeneralWarning: GeneralWarning
+        FotooboWarning: If no configuration file could be found
     """
     files: List[Path] = []
     if config.is_file():
@@ -142,7 +142,7 @@ def info(config: Path) -> Result[FortiGateInfo]:
 
     if not files:
         log.warning("There are no configuration files")
-        raise GeneralWarning("There are no configuration files")
+        raise FotooboWarning("There are no configuration files")
 
     result = Result[FortiGateInfo]()
 

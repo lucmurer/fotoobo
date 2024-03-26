@@ -11,7 +11,7 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fotoobo.exceptions import GeneralError
+from fotoobo.exceptions import FotooboError
 from fotoobo.helpers.files import load_json_file, save_json_file
 
 log = logging.getLogger("fotoobo")
@@ -56,10 +56,10 @@ class CheckpointConverter:
             bulk_size = 1
 
         if obj_type not in self.supported_types:
-            raise GeneralError(f"type '{obj_type}' is not supported to convert")
+            raise FotooboError(f"type '{obj_type}' is not supported to convert")
 
         if obj_type not in self.assets:
-            raise GeneralError(f"type '{obj_type}' is not present in the infile")
+            raise FotooboError(f"type '{obj_type}' is not present in the infile")
 
         log.debug("Converting asset type '%s'", obj_type)
         log.debug("Found '%s' asset(s)", len(self.assets[obj_type]))

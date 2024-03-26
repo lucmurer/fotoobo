@@ -9,7 +9,7 @@ import pytest
 import requests
 from _pytest.monkeypatch import MonkeyPatch
 
-from fotoobo.exceptions import APIError, GeneralWarning
+from fotoobo.exceptions import APIError, FotooboWarning
 from fotoobo.fortinet.forticlientems import FortiClientEMS
 from tests.helper import ResponseMock
 
@@ -198,7 +198,7 @@ class TestFortiClientEMS:
             MagicMock(return_value=ResponseMock(json={"data": {"System": {}}}, status=200)),
         )
         ems = FortiClientEMS("host", "dummy_user", "dummy_pass", ssl_verify=False)
-        with pytest.raises(GeneralWarning) as err:
+        with pytest.raises(FotooboWarning) as err:
             ems.get_version()
         assert "Did not find any FortiClient EMS version number in response" in str(err.value)
         requests.Session.get.assert_called_with(
@@ -218,5 +218,5 @@ class TestFortiClientEMS:
             MagicMock(side_effect=APIError(999)),
         )
         ems = FortiClientEMS("host", "dummy_user", "dummy_pass", ssl_verify=False)
-        with pytest.raises(GeneralWarning, match=r"host returned: unknown"):
+        with pytest.raises(FotooboWarning, match=r"host returned: unknown"):
             ems.get_version()

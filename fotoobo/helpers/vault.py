@@ -13,7 +13,7 @@ from typing import Any, Optional, Union
 import requests
 import urllib3
 
-from fotoobo.exceptions.exceptions import GeneralError
+from fotoobo.exceptions.exceptions import FotooboError
 
 log = logging.getLogger("fotoobo")
 
@@ -92,12 +92,12 @@ class Client:  # pylint: disable=too-many-instance-attributes
             The date from the vault or the error that occurred
 
         Raises:
-            GeneralError: If no token could be retrieved
+            FotooboError: If no token could be retrieved
         """
         if not self.token and not self.get_token():
             error_message = "Unable to get vault token"
             log.error(error_message)
-            raise GeneralError(error_message)
+            raise FotooboError(error_message)
 
         url = f"{self.url}/{self.data_path.strip('/')}"
         log.debug("Get data from '%s'", url)

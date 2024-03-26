@@ -7,7 +7,7 @@ import pytest
 from typer.testing import CliRunner
 
 from fotoobo.cli.main import app
-from fotoobo.exceptions.exceptions import GeneralWarning
+from fotoobo.exceptions.exceptions import FotooboWarning
 from tests.helper import parse_help_output
 
 runner = CliRunner()
@@ -58,7 +58,7 @@ def test_cli_app_fgt_config_info(file: str) -> None:
 
 def test_cli_app_fgt_config_info_empty_config() -> None:
     """Test cli options and commands for fgt config info with an empty configuration"""
-    with pytest.raises(GeneralWarning, match=r"There is no info in"):
+    with pytest.raises(FotooboWarning, match=r"There is no info in"):
         runner.invoke(
             app,
             [
@@ -75,7 +75,7 @@ def test_cli_app_fgt_config_info_empty_config() -> None:
 
 def test_cli_app_fgt_config_info_nonexist_config_file() -> None:
     """Test cli options and commands for fgt config info with an nonexisting configuration"""
-    with pytest.raises(GeneralWarning, match=r"There are no"):
+    with pytest.raises(FotooboWarning, match=r"There are no"):
         runner.invoke(
             app,
             [
@@ -92,7 +92,7 @@ def test_cli_app_fgt_config_info_nonexist_config_file() -> None:
 
 def test_cli_app_fgt_config_info_dir() -> None:
     """Test cli options and commands for fgt config info if a directory is given"""
-    with pytest.raises(GeneralWarning, match=r"There is no info in"):
+    with pytest.raises(FotooboWarning, match=r"There is no info in"):
         runner.invoke(
             app,
             [

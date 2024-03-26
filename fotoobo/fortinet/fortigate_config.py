@@ -5,7 +5,7 @@ import logging
 from pathlib import Path
 from typing import IO, Any, Dict, List, Optional
 
-from fotoobo.exceptions import GeneralWarning
+from fotoobo.exceptions import FotooboWarning
 from fotoobo.helpers.files import load_json_file, save_json_file
 
 from .fortigate_info import FortiGateInfo
@@ -122,7 +122,7 @@ class FortiGateConfig:
         vdom_config: Dict[str, Any] = {}
 
         if "info" not in parsed_config:
-            raise GeneralWarning(f"There is no info in {configuration_file}")
+            raise FotooboWarning(f"There is no info in {configuration_file}")
 
         info = parsed_config["info"]
         parsed_config.pop("info")

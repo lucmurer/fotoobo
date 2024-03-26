@@ -6,7 +6,7 @@ from typing import Any, Dict, Optional
 
 import requests
 
-from fotoobo.exceptions import APIError, GeneralWarning
+from fotoobo.exceptions import APIError, FotooboWarning
 
 from .fortinet import Fortinet
 
@@ -33,7 +33,7 @@ class FortiGate(Fortinet):
             **kwargs: See Fortinet class for available arguments
         """
         if not hostname:
-            raise GeneralWarning("No hostname specified")
+            raise FotooboWarning("No hostname specified")
 
         super().__init__(hostname=hostname, **kwargs)
         self.api_url = f"https://{self.hostname}:{self.https_port}/api/v2"
@@ -98,7 +98,7 @@ class FortiGate(Fortinet):
 
         except APIError as err:
             log.warning("'%s' returned: '%s'", self.hostname, err.message)
-            raise GeneralWarning(f"{self.hostname} returned: {err.message}") from err
+            raise FotooboWarning(f"{self.hostname} returned: {err.message}") from err
 
         fgt_version = response.json().get("version", "unknown")
         return fgt_version

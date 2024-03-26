@@ -6,7 +6,7 @@ from typing import Any
 from requests.exceptions import HTTPError
 
 
-class GeneralException(Exception):
+class FotooboException(Exception):
     """
     This is the generic fotoobo exception which can be used by any sub exception.
     """
@@ -16,8 +16,13 @@ class GeneralException(Exception):
         self.message = message
         super().__init__(self.message)
 
+    def __str__(self) -> str:
+        """Return the message of the exception"""
 
-class APIError(GeneralException):
+        return self.message
+
+
+class APIError(FotooboException):
     """Exception for errors with the network API"""
 
     def __init__(self, err: Any) -> None:
@@ -46,18 +51,18 @@ class APIError(GeneralException):
         super().__init__(self.message)
 
 
-class GeneralError(GeneralException):
+class FotooboError(FotooboException):
     """
     The exception to raise if a general error occurred.
     The class does not have any methods as the only one (__init__) is inherited from its parent.
-    Raise a GeneralError when it does not make sense to do further processing and the program should
+    Raise a FotooboError when it does not make sense to do further processing and the program should
     stop and exit.
     """
 
 
-class GeneralWarning(GeneralException):
+class FotooboWarning(FotooboException):
     """
     The exception to raise if a general warning occurred.
     The class does not have any methods as the only one (__init__) is inherited from its parent.
-    Raise a GeneralWarning if a part of the program fails but it is safe to do further processing.
+    Raise a FotooboWarning if a part of the program fails, but it is safe to do further processing.
     """

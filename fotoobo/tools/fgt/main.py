@@ -8,7 +8,7 @@ from typing import Optional, Tuple
 
 from rich.progress import Progress
 
-from fotoobo.exceptions import APIError, GeneralError
+from fotoobo.exceptions import APIError, FotooboError
 from fotoobo.fortinet.fortigate import FortiGate
 from fotoobo.helpers.config import config
 from fotoobo.helpers.result import Result
@@ -64,7 +64,7 @@ def backup(
                 log.error(message)
                 result.push_message(name, message, level="error")
 
-        except GeneralError as err:
+        except FotooboError as err:
             result.push_message(name, err.message, level="error")
 
         except APIError as err:

@@ -4,21 +4,21 @@ test_convert
 
 import pytest
 
-from fotoobo.exceptions import GeneralError
+from fotoobo.exceptions import FotooboError
 from fotoobo.fortinet.convert import CheckpointConverter
 
 
 def test_convert_hosts_type_not_present() -> None:
     """Test converting hosts when a supported type is not in the assets dict"""
     assets = CheckpointConverter({})
-    with pytest.raises(GeneralError, match=r"type '.*' is not present in the infile"):
+    with pytest.raises(FotooboError, match=r"type '.*' is not present in the infile"):
         assets.convert("hosts")
 
 
 def test_convert_checkpoint_hosts_type_unsupported() -> None:
     """Test converting Checkpoint hosts when an unsupported type is given"""
     assets = CheckpointConverter({})
-    with pytest.raises(GeneralError, match=r"type '.*' is not supported to convert"):
+    with pytest.raises(FotooboError, match=r"type '.*' is not supported to convert"):
         assets.convert("unsupported")
 
 

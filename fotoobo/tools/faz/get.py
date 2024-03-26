@@ -21,7 +21,7 @@ def version(host: str) -> Result[str]:
         The version string per FAZ
 
     Raises:
-        GeneralWarning: GeneralWarning
+        FotooboWarning: FotooboWarning
     """
     result = Result[str]()
     inventory = Inventory(config.inventory_file)

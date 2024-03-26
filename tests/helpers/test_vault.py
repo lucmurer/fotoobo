@@ -10,7 +10,7 @@ import pytest
 import requests
 from _pytest.monkeypatch import MonkeyPatch
 
-from fotoobo.exceptions.exceptions import GeneralError
+from fotoobo.exceptions.exceptions import FotooboError
 from fotoobo.helpers.vault import Client
 from tests.helper import ResponseMock
 
@@ -298,5 +298,5 @@ class TestClient:
             role_id="dummy_role_id",
             secret_id="dummy_secret_id",
         )
-        with pytest.raises(GeneralError, match=r"Unable to get vault token"):
+        with pytest.raises(FotooboError, match=r"Unable to get vault token"):
             client.get_data()

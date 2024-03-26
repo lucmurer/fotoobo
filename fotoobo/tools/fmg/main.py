@@ -4,7 +4,7 @@ FortiManager assign utility
 import logging
 from pathlib import Path
 
-from fotoobo.exceptions.exceptions import GeneralWarning
+from fotoobo.exceptions.exceptions import FotooboWarning
 from fotoobo.helpers.config import config
 from fotoobo.helpers.files import load_json_file
 from fotoobo.helpers.result import Result
@@ -72,10 +72,10 @@ def post(file: Path, adom: str, host: str) -> Result[str]:
         Result
 
     Raises:
-        GeneralWarning
+        FotooboWarning
     """
     if not (payloads := load_json_file(file)):
-        raise GeneralWarning(f"There is no data in the given file ({file})")
+        raise FotooboWarning(f"There is no data in the given file ({file})")
 
     inventory = Inventory(config.inventory_file)
     result: Result[str] = Result()

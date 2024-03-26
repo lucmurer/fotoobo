@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
-from fotoobo.exceptions import GeneralError
+from fotoobo.exceptions import FotooboError
 from fotoobo.tools.fmg.get import policy
 from tests.helper import ResponseMock
 
@@ -91,5 +91,5 @@ def test_policy_exception_status_not_0(monkeypatch: MonkeyPatch) -> None:
             )
         ),
     )
-    with pytest.raises(GeneralError, match=r"FortiManager test_fmg returned 42: msg"):
+    with pytest.raises(FotooboError, match=r"FortiManager test_fmg returned 42: msg"):
         policy("test_fmg", "", "")

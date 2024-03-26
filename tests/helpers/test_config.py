@@ -9,7 +9,7 @@ from unittest.mock import MagicMock
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
-from fotoobo.exceptions.exceptions import GeneralError
+from fotoobo.exceptions.exceptions import FotooboError
 from fotoobo.helpers.config import Config
 
 
@@ -113,5 +113,5 @@ class TestConfig:
             assert test_config.vault["role_id"].endswith(expected)
 
         else:
-            with pytest.raises(GeneralError, match=r"Missing vault configuration data:.*"):
+            with pytest.raises(FotooboError, match=r"Missing vault configuration data:.*"):
                 test_config.load_configuration(Path("tests/fotoobo.yaml"))

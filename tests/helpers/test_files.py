@@ -11,7 +11,7 @@ from unittest.mock import MagicMock
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
-from fotoobo.exceptions import GeneralError
+from fotoobo.exceptions import FotooboError
 from fotoobo.helpers.files import (
     create_dir,
     file_to_ftp,
@@ -102,7 +102,7 @@ def test_file_to_zip(json_test_file: Path, temp_dir: Path) -> None:
 )
 def test_file_to_zip_invalid_level(zip_level: int) -> None:
     """Test the file_to_zip function with invalid zip level"""
-    with pytest.raises(GeneralError, match=r"zip level must between 0 and 9"):
+    with pytest.raises(FotooboError, match=r"zip level must between 0 and 9"):
         file_to_zip(Path(""), Path(""), zip_level)
 
 
@@ -319,5 +319,5 @@ def test_create_dir_for_sub_sub_directory(temp_dir: Path) -> None:
 def test_create_dir_with_os_error(monkeypatch: MonkeyPatch) -> None:
     """Test create_dir when an OSError exception is raised"""
     monkeypatch.setattr("fotoobo.helpers.files.Path.mkdir", MagicMock(side_effect=OSError()))
-    with pytest.raises(GeneralError, match=r"Unable to create directory dummy"):
+    with pytest.raises(FotooboError, match=r"Unable to create directory dummy"):
         create_dir(Path("dummy"))

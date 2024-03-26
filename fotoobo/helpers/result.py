@@ -14,7 +14,7 @@ from rich.pretty import pprint
 from rich.table import Table
 from rich.theme import Theme
 
-from fotoobo.exceptions import GeneralWarning
+from fotoobo.exceptions import FotooboWarning
 from fotoobo.helpers import cli_path
 
 ftb_theme = Theme({"var": "white", "ftb": "#FF33BB bold", "chk": "green"})
@@ -130,10 +130,10 @@ class Result(Generic[T]):
             The results stored before with push_results, or None if the host does not exist
 
         Raises:
-            GeneralWarning: If there is no result for host
+            FotooboWarning: If there is no result for host
         """
         if host not in self.results:
-            raise GeneralWarning(f"Host {host} is not in results.")
+            raise FotooboWarning(f"Host {host} is not in results.")
 
         return self.results[host]
 
@@ -163,7 +163,7 @@ class Result(Generic[T]):
             headers:     Set the headers (if needed)
 
         Raises:
-            GeneralWarning: If the data cannot be interpreted as a table
+            FotooboWarning: If the data cannot be interpreted as a table
         """
         if not headers:
             headers = []
@@ -195,7 +195,7 @@ class Result(Generic[T]):
             title:       The title for the table
         """
         if not isinstance(data, list):
-            raise GeneralWarning("data for print_table_raw must be a list of dicts.")
+            raise FotooboWarning("data for print_table_raw must be a list of dicts.")
 
         table = Table(title=title, show_header=auto_header or bool(headers))
         if auto_header:

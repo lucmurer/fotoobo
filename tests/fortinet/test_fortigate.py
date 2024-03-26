@@ -10,7 +10,7 @@ from unittest.mock import MagicMock
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
-from fotoobo.exceptions import GeneralWarning
+from fotoobo.exceptions import FotooboWarning
 from fotoobo.fortinet.fortigate import FortiGate
 from fotoobo.fortinet.fortinet import Fortinet
 from tests.helper import ResponseMock
@@ -26,7 +26,7 @@ class TestFortiGate:
             "fotoobo.fortinet.fortinet.Fortinet.api",
             MagicMock(return_value=ResponseMock(json={"key": "value"}, status=200)),
         )
-        with pytest.raises(GeneralWarning) as err:
+        with pytest.raises(FotooboWarning) as err:
             FortiGate("", "token")
         assert "No hostname specified" in str(err.value)
 
@@ -82,6 +82,6 @@ class TestFortiGate:
             "fotoobo.fortinet.fortinet.requests.Session.get",
             MagicMock(return_value=ResponseMock(json={"dummy": "dummy"}, status=404)),
         )
-        with pytest.raises(GeneralWarning) as err:
+        with pytest.raises(FotooboWarning) as err:
             FortiGate("dummy_hostname", "").get_version()
         assert "HTTP/404 Resource Not Found" in str(err.value)

@@ -4,6 +4,6 @@ The exceptions module
 Here we define fotoobo specific exceptions
 """
 
-from .exceptions import APIError, GeneralError, GeneralWarning
+from .exceptions import APIError, FotooboError, FotooboWarning
 
-__all__ = ["APIError", "GeneralError", "GeneralWarning"]
+__all__ = ["APIError", "FotooboError", "FotooboWarning"]

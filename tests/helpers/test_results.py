@@ -10,7 +10,7 @@ from unittest.mock import MagicMock
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
-from fotoobo.exceptions import GeneralWarning
+from fotoobo.exceptions import FotooboWarning
 from fotoobo.helpers import cli_path
 from fotoobo.helpers.result import Result
 from fotoobo.inventory import GenericDevice
@@ -151,7 +151,7 @@ class TestResults:
         result.push_result("test_host", "test_result")
 
         assert result.get_result("test_host") == "test_result"
-        with pytest.raises(GeneralWarning, match=r"Host nonexisting_host is not in results."):
+        with pytest.raises(FotooboWarning, match=r"Host nonexisting_host is not in results."):
             result.get_result("nonexisting_host")
 
     @staticmethod
@@ -243,7 +243,7 @@ class TestResults:
         """Test print_table_raw() when data given is unsupported"""
         result = Result[Any]()
 
-        with pytest.raises(GeneralWarning, match=r"must be a list of dicts"):
+        with pytest.raises(FotooboWarning, match=r"must be a list of dicts"):
             result.print_table_raw(input_data, [])
 
     @staticmethod

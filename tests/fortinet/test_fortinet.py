@@ -9,7 +9,7 @@ import requests
 from _pytest.monkeypatch import MonkeyPatch
 from urllib3.exceptions import NewConnectionError, SSLError
 
-from fotoobo.exceptions import APIError, GeneralError
+from fotoobo.exceptions import APIError, FotooboError
 from fotoobo.fortinet.fortinet import Fortinet
 from tests.helper import ResponseMock
 
@@ -90,7 +90,7 @@ class TestFortinet:
             f"fotoobo.fortinet.fortinet.requests.Session.{method}",
             MagicMock(side_effect=requests.exceptions.ConnectTimeout()),
         )
-        with pytest.raises(GeneralError, match=r"Connection timeout \(dummy\)"):
+        with pytest.raises(FotooboError, match=r"Connection timeout \(dummy\)"):
             FortinetTestClass("dummy").api(method, "url")
 
     @staticmethod
@@ -103,7 +103,7 @@ class TestFortinet:
             f"fotoobo.fortinet.fortinet.requests.Session.{method}",
             MagicMock(side_effect=requests.exceptions.ReadTimeout()),
         )
-        with pytest.raises(GeneralError, match=r"Read timeout \(dummy\)"):
+        with pytest.raises(FotooboError, match=r"Read timeout \(dummy\)"):
             FortinetTestClass("dummy").api(method, "url")
 
     @staticmethod
@@ -124,7 +124,7 @@ class TestFortinet:
             f"fotoobo.fortinet.fortinet.requests.Session.{method}",
             MagicMock(side_effect=requests.exceptions.ConnectionError()),
         )
-        with pytest.raises(GeneralError) as err:
+        with pytest.raises(FotooboError) as err:
             FortinetTestClass("dummy").api(method, "url")
         assert "Unknown connection error" in str(err.value)
 
@@ -159,7 +159,7 @@ class TestFortinet:
                 )
             ),
         )
-        with pytest.raises(GeneralError) as err:
+        with pytest.raises(FotooboError) as err:
             FortinetTestClass("dummy").api(method, "url")
         assert expected in str(err.value)
 
@@ -193,7 +193,7 @@ class TestFortinet:
             f"fotoobo.fortinet.fortinet.requests.Session.{method}",
             MagicMock(side_effect=requests.exceptions.SSLError(MagicMock(reason=ssl_error))),
         )
-        with pytest.raises(GeneralError, match=expected):
+        with pytest.raises(FotooboError, match=expected):
             FortinetTestClass("dummy").api(method, "url")
 
     @staticmethod

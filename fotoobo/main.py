@@ -13,8 +13,11 @@ exits with its own exit codes (1 or 2) when an exception rises.
 import sys
 import traceback
 
+from rich.console import Console
+from rich.panel import Panel
+
 from fotoobo.cli.main import app
-from fotoobo.exceptions import APIError, GeneralError, GeneralWarning
+from fotoobo.exceptions import APIError, FotooboError, FotooboWarning
 
 
 def main() -> None:
@@ -24,12 +27,26 @@ def main() -> None:
     try:
         app()
 
-    except GeneralWarning as warn:  # pragma: no cover
-        print(f"Warning: {warn.message}")
+    except FotooboWarning as warn:
+        console = Console(style="#ff6600", stderr=True)
+        console.print(
+            Panel(
+                f"fotoobo finished with a warning:\n{warn}",
+                title="Warning",
+                title_align="left",
+            )
+        )
         sys.exit(30)
 
-    except (GeneralError, APIError) as err:  # pragma: no cover
-        print(f"Error: {err.message}")
+    except (FotooboError, APIError) as err:
+        console = Console(style="#ff0000", stderr=True)
+        console.print(
+            Panel(
+                f"fotoobo finished with an error:\n{err}\nCannot continue.",
+                title="Error",
+                title_align="left",
+            )
+        )
         sys.exit(40)
 
     except Exception:  # pylint: disable=broad-except # pragma: no cover

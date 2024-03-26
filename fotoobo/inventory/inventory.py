@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from fotoobo.exceptions import GeneralWarning
+from fotoobo.exceptions import FotooboWarning
 from fotoobo.fortinet.fortianalyzer import FortiAnalyzer
 from fotoobo.fortinet.forticlientems import FortiClientEMS
 from fotoobo.fortinet.fortigate import FortiGate
@@ -74,7 +74,7 @@ class Inventory:
             Dictionary of assets with name as key
 
         Raises:
-            GeneralWarning: If no asset was found in the inventory that matches name or type
+            FotooboWarning: If no asset was found in the inventory that matches name or type
         """
         log.debug("Getting assets with name '%s' and type '%s'", name, type)
         name_pattern = f"^{name}$".replace("*", ".*")
@@ -92,7 +92,7 @@ class Inventory:
                     assets[_name] = _asset
 
         if not assets:
-            raise GeneralWarning(
+            raise FotooboWarning(
                 f"no asset of type '{type}' and name '{name}' was found in the inventory"
             )
 
@@ -105,7 +105,7 @@ class Inventory:
     ) -> Any:
         """
         Get a single asset from the inventory. To be sure the item has the correct type you can
-        specify the desired type and a GeneralWarning is raised if the type does not match.
+        specify the desired type and a FotooboWarning is raised if the type does not match.
 
         Args:
             name: Which exact asset to get.
@@ -115,8 +115,8 @@ class Inventory:
             Inventory asset
 
         Raises:
-            GeneralWarning: If the asset was not found in the inventory
-            GeneralWarning: If the specified type does not match the type of the item
+            FotooboWarning: If the asset was not found in the inventory
+            FotooboWarning: If the specified type does not match the type of the item
         """
         log.debug("Getting asset with name '%s'", name)
 
@@ -124,12 +124,12 @@ class Inventory:
             asset = self.assets[name]
 
         except KeyError as error:
-            raise GeneralWarning(
+            raise FotooboWarning(
                 f"Asset with name '{name}' was not found in the inventory"
             ) from error
 
         if type and type != asset.type:
-            raise GeneralWarning(f"Asset with name '{name}' is not of type '{type}'")
+            raise FotooboWarning(f"Asset with name '{name}' is not of type '{type}'")
 
         return asset
 
@@ -162,7 +162,7 @@ class Inventory:
                 try:
                     self.assets[name] = FortiGate(**asset)
 
-                except GeneralWarning as err:
+                except FotooboWarning as err:
                     log.warning("%s: %s", name, err)
 
             elif asset.get("type", "") == "forticlientems":

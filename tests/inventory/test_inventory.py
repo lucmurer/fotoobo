@@ -9,7 +9,7 @@ from unittest.mock import MagicMock
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
-from fotoobo.exceptions import GeneralWarning
+from fotoobo.exceptions import FotooboWarning
 from fotoobo.helpers.config import config
 from fotoobo.inventory.inventory import Inventory
 
@@ -82,7 +82,7 @@ class TestInventory:
     def test_get_with_exception(test_name: Optional[str], test_type: Optional[str]) -> None:
         """Test Inventory.get() when an exception is raised"""
         inventory = Inventory(Path("tests/data/inventory.yaml"))
-        with pytest.raises(GeneralWarning, match=r"no asset of type .* and name .*"):
+        with pytest.raises(FotooboWarning, match=r"no asset of type .* and name .*"):
             inventory.get(test_name, test_type)
 
     @staticmethod
@@ -111,7 +111,7 @@ class TestInventory:
     def test_get_item_with_exception(test_name: str, test_type: Optional[str]) -> None:
         """Test Inventory.get_item() when an exception is raised"""
         inventory = Inventory(Path("tests/data/inventory.yaml"))
-        with pytest.raises(GeneralWarning, match=r"Asset with name"):
+        with pytest.raises(FotooboWarning, match=r"Asset with name"):
             inventory.get_item(test_name, test_type)
 
     @staticmethod

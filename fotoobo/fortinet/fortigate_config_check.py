@@ -4,7 +4,7 @@ FortiGate configuration checker
 import logging
 from typing import Any, Dict, List
 
-from fotoobo.exceptions import GeneralError
+from fotoobo.exceptions import FotooboError
 from fotoobo.fortinet.fortigate_config import FortiGateConfig
 from fotoobo.helpers.result import Result
 
@@ -49,7 +49,7 @@ class FortiGateConfigCheck:
         """
         if not self.checks:
             log.error("There are no checks defined")
-            raise GeneralError("There are no checks defined")
+            raise FotooboError("There are no checks defined")
 
         for check in self.checks:
             # applying info filter

@@ -10,7 +10,7 @@ from typing import Any, Dict, Optional
 
 import requests
 
-from fotoobo.exceptions import APIError, GeneralWarning
+from fotoobo.exceptions import APIError, FotooboWarning
 
 from .fortinet import Fortinet
 
@@ -94,14 +94,14 @@ class FortiClientEMS(Fortinet):
 
         except APIError as err:
             log.warning("'%s' returned: '%s'", self.hostname, err.message)
-            raise GeneralWarning(f"{self.hostname} returned: {err.message}") from err
+            raise FotooboWarning(f"{self.hostname} returned: {err.message}") from err
 
         try:
             ems_version: str = response.json()["data"]["System"]["VERSION"]
 
         except KeyError as err:
             log.warning("Did not find any FortiClient EMS version number in response")
-            raise GeneralWarning(
+            raise FotooboWarning(
                 "Did not find any FortiClient EMS version number in response"
             ) from err
 

@@ -13,7 +13,7 @@ import pytest
 from _pytest.monkeypatch import MonkeyPatch
 from rich.logging import RichHandler
 
-from fotoobo.exceptions import GeneralError
+from fotoobo.exceptions import FotooboError
 from fotoobo.helpers.config import Config
 from fotoobo.helpers.log import Log, SysLogFormatter
 
@@ -390,5 +390,5 @@ class TestLog:
             MagicMock(side_effect=OSError("[Errno 113] No route to host")),
         )
 
-        with pytest.raises(GeneralError, match="Cannot configure SysLog logging: *"):
+        with pytest.raises(FotooboError, match="Cannot configure SysLog logging: *"):
             Log.configure_logging(True, "INFO")

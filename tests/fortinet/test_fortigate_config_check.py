@@ -6,7 +6,7 @@ from typing import Any, Dict, List
 
 import pytest
 
-from fotoobo.exceptions import GeneralError
+from fotoobo.exceptions import FotooboError
 from fotoobo.fortinet.fortigate_config import FortiGateConfig
 from fotoobo.fortinet.fortigate_config_check import FortiGateConfigCheck
 from fotoobo.helpers.files import load_yaml_file
@@ -72,7 +72,7 @@ class TestFortiGateConfigCheck:
         try:
             conf_check.execute_checks()
             assert False
-        except GeneralError as err:
+        except FotooboError as err:
             assert True
             assert "There are no checks defined" in err.message
 

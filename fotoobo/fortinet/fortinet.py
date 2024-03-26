@@ -11,7 +11,7 @@ from typing import Any, Dict, Optional, Union
 import requests
 import urllib3
 
-from fotoobo.exceptions import APIError, GeneralError
+from fotoobo.exceptions import APIError, FotooboError
 
 log = logging.getLogger("fotoobo")
 
@@ -126,11 +126,11 @@ class Fortinet(ABC):
             except (AttributeError, IndexError):
                 pass
 
-            raise GeneralError(f"{error} ({self.hostname})") from err
+            raise FotooboError(f"{error} ({self.hostname})") from err
 
         except requests.exceptions.ConnectTimeout as err:
             log.debug(err)
-            raise GeneralError(f"Connection timeout ({self.hostname})") from err
+            raise FotooboError(f"Connection timeout ({self.hostname})") from err
 
         except requests.exceptions.ConnectionError as err:
             log.debug(err)
@@ -146,11 +146,11 @@ class Fortinet(ABC):
             except (IndexError, AttributeError, TypeError):
                 pass
 
-            raise GeneralError(f"{error} ({self.hostname})") from err
+            raise FotooboError(f"{error} ({self.hostname})") from err
 
         except requests.exceptions.ReadTimeout as err:
             log.error(err)
-            raise GeneralError(f"Read timeout ({self.hostname})") from err
+            raise FotooboError(f"Read timeout ({self.hostname})") from err
 
         log.debug(
             'Request time: [bold green]%2dms[/] "%s %s"',

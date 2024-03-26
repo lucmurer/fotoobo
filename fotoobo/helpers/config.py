@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from fotoobo.exceptions import GeneralError
+from fotoobo.exceptions import FotooboError
 from fotoobo.helpers.files import load_yaml_file
 
 
@@ -99,7 +99,7 @@ class Config:
                         ]
                         - self.vault.keys()
                     ):
-                        raise GeneralError(f"Missing vault configuration data: {missing}")
+                        raise FotooboError(f"Missing vault configuration data: {missing}")
 
 
 config = Config()

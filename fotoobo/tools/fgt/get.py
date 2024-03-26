@@ -7,7 +7,7 @@ from typing import Optional, Tuple
 
 from rich.progress import Progress
 
-from fotoobo.exceptions import GeneralError, GeneralWarning
+from fotoobo.exceptions import FotooboError, FotooboWarning
 from fotoobo.fortinet.fortigate import FortiGate
 from fotoobo.helpers.config import config
 from fotoobo.helpers.result import Result
@@ -47,7 +47,7 @@ def version(host: Optional[str] = None) -> Result[str]:
         try:
             fortigate_version = fgt.get_version()
 
-        except (GeneralWarning, GeneralError) as exception:
+        except (FotooboWarning, FotooboError) as exception:
             fortigate_version = f"unknown due to {exception.message}"
 
         return name, fortigate_version

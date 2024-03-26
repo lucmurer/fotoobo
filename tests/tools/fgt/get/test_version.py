@@ -9,7 +9,7 @@ from unittest.mock import MagicMock
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 
-from fotoobo.exceptions import GeneralError, GeneralWarning
+from fotoobo.exceptions import FotooboError, FotooboWarning
 from fotoobo.tools.fgt.get import version
 
 
@@ -45,8 +45,8 @@ def test_version(host: str, monkeypatch: MonkeyPatch) -> None:
 @pytest.mark.parametrize(
     "side_effect",
     (
-        pytest.param(GeneralWarning("dummy message"), id="GeneralWarning"),
-        pytest.param(GeneralError("dummy message"), id="GeneralError"),
+        pytest.param(FotooboWarning("dummy message"), id="FotooboWarning"),
+        pytest.param(FotooboError("dummy message"), id="FotooboError"),
     ),
 )
 def test_version_exception_from_fortigate(side_effect: Any, monkeypatch: MonkeyPatch) -> None:
@@ -64,5 +64,5 @@ def test_version_no_fortigates(monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setattr(
         "fotoobo.tools.fgt.get.Inventory._load_inventory", MagicMock(return_value=None)
     )
-    with pytest.raises(GeneralWarning, match=r"no asset of type 'fortigate' .* was found.*"):
+    with pytest.raises(FotooboWarning, match=r"no asset of type 'fortigate' .* was found.*"):
         version("")

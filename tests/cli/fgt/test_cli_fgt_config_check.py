@@ -9,7 +9,7 @@ from _pytest.monkeypatch import MonkeyPatch
 from typer.testing import CliRunner
 
 from fotoobo.cli.main import app
-from fotoobo.exceptions.exceptions import GeneralError, GeneralWarning
+from fotoobo.exceptions.exceptions import FotooboError, FotooboWarning
 from tests.helper import parse_help_output
 
 runner = CliRunner()
@@ -100,7 +100,7 @@ def test_cli_app_fgt_config_check_empty_config() -> None:
 
 def test_cli_app_fgt_config_check_nonexist_config_file() -> None:
     """Test cli options and commands for fgt config check with an nonexisting configuration"""
-    with pytest.raises(GeneralWarning, match=r"There are no"):
+    with pytest.raises(FotooboWarning, match=r"There are no"):
         runner.invoke(
             app,
             [
@@ -135,7 +135,7 @@ def test_cli_app_fgt_config_check_dir() -> None:
 
 def test_cli_app_fgt_config_check_invalid_bundle_file() -> None:
     """Test cli options and commands for fgt config check with an invalid check bundle file"""
-    with pytest.raises(GeneralError, match=r"No valid bundle file"):
+    with pytest.raises(FotooboError, match=r"No valid bundle file"):
         runner.invoke(
             app,
             [

@@ -8,7 +8,7 @@ from _pytest.monkeypatch import MonkeyPatch
 from typer.testing import CliRunner
 
 from fotoobo.cli.main import app
-from fotoobo.exceptions import GeneralError, GeneralWarning
+from fotoobo.exceptions import FotooboError, FotooboWarning
 from tests.helper import ResponseMock, parse_help_output
 
 runner = CliRunner()
@@ -114,12 +114,12 @@ def test_cli_app_fmg_get_version_dummy() -> None:
 
 
 def test_cli_app_fmg_get_version_exception_warning(monkeypatch: MonkeyPatch) -> None:
-    """Test cli when it raises a GeneralWarning exception"""
+    """Test cli when it raises a FotooboWarning exception"""
     monkeypatch.setattr(
         "fotoobo.fortinet.fortimanager.FortiManager.login",
-        MagicMock(side_effect=GeneralWarning("dummy")),
+        MagicMock(side_effect=FotooboWarning("dummy")),
     )
-    with pytest.raises(GeneralWarning, match=r"dummy"):
+    with pytest.raises(FotooboWarning, match=r"dummy"):
         runner.invoke(
             app,
             ["-c", "tests/fotoobo.yaml", "fmg", "get", "version", "test_fmg"],
@@ -128,12 +128,12 @@ def test_cli_app_fmg_get_version_exception_warning(monkeypatch: MonkeyPatch) -> 
 
 
 def test_cli_app_fmg_get_version_exception_error(monkeypatch: MonkeyPatch) -> None:
-    """Test cli when it raises a GeneralError exception"""
+    """Test cli when it raises a FotooboError exception"""
     monkeypatch.setattr(
         "fotoobo.fortinet.fortimanager.FortiManager.login",
-        MagicMock(side_effect=GeneralError("dummy")),
+        MagicMock(side_effect=FotooboError("dummy")),
     )
-    with pytest.raises(GeneralError, match=r"dummy"):
+    with pytest.raises(FotooboError, match=r"dummy"):
         runner.invoke(
             app,
             ["-c", "tests/fotoobo.yaml", "fmg", "get", "version", "test_fmg"],

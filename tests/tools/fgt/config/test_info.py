@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from fotoobo.exceptions.exceptions import GeneralWarning
+from fotoobo.exceptions.exceptions import FotooboWarning
 from fotoobo.tools.fgt.config import info
 
 
@@ -32,11 +32,11 @@ def test_info(file: Path) -> None:
 )
 def test_info_empty(file: Path) -> None:
     """test the info utility with directory and empty configuration file"""
-    with pytest.raises(GeneralWarning, match=r"There is no info in"):
+    with pytest.raises(FotooboWarning, match=r"There is no info in"):
         info(file)
 
 
 def test_info_no_files_in_dir() -> None:
     """test the info utility with directory and empty configuration file"""
-    with pytest.raises(GeneralWarning, match=r"There are no configuration files"):
+    with pytest.raises(FotooboWarning, match=r"There are no configuration files"):
         info(Path("tests/"))

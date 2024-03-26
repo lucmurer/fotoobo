@@ -11,7 +11,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 import yaml
 
-from fotoobo.exceptions import GeneralError
+from fotoobo.exceptions import FotooboError
 
 log = logging.getLogger("fotoobo")
 
@@ -31,7 +31,7 @@ def create_dir(directory: Path) -> None:
             directory.mkdir(parents=True)
 
         except OSError as err:
-            raise GeneralError(f"Unable to create directory {directory}") from err
+            raise FotooboError(f"Unable to create directory {directory}") from err
 
 
 def file_to_ftp(file: Path, server: Any) -> int:
@@ -84,7 +84,7 @@ def file_to_ftp(file: Path, server: Any) -> int:
                             return_code = int(code[1])
 
         else:
-            raise GeneralError(f'Unknown FTP protocol "{protocol}" for server "{server.hostname}"')
+            raise FotooboError(f'Unknown FTP protocol "{protocol}" for server "{server.hostname}"')
 
     else:
         return_code = 666
@@ -106,7 +106,7 @@ def file_to_zip(src: Path, dst: Path, level: int = 9) -> None:
         Return code
     """
     if level < 0 or level > 9:
-        raise GeneralError("zip level must between 0 and 9")
+        raise FotooboError("zip level must between 0 and 9")
 
     inner_file = dst if not dst.suffix == ".zip" else Path(dst.name[0:-4])
     if src.is_file():

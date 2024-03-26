@@ -23,7 +23,7 @@ from typing import Optional
 
 from rich.logging import RichHandler
 
-from fotoobo.exceptions import GeneralError, GeneralWarning
+from fotoobo.exceptions import FotooboError, FotooboWarning
 from fotoobo.helpers.config import config
 from fotoobo.helpers.files import load_yaml_file
 
@@ -118,7 +118,7 @@ class Log:
             log_level: The desired log_level (given by CLI argument)
 
         Raises:
-            GeneralError: On unrecoverable errors (usually on non-existing/empty or
+            FotooboError: On unrecoverable errors (usually on non-existing/empty or
                           invalid logging configuration file
         """
         # pylint: disable=too-many-branches
@@ -136,20 +136,20 @@ class Log:
                     logging.config.dictConfig(dict(logging_config))
 
                 except ValueError as error:
-                    raise GeneralError(f"Cannot configure logging: {str(error)}") from error
+                    raise FotooboError(f"Cannot configure logging: {str(error)}") from error
 
                 except TypeError as error:
-                    raise GeneralError(f"Cannot configure logging: {str(error)}") from error
+                    raise FotooboError(f"Cannot configure logging: {str(error)}") from error
 
                 except AttributeError as error:
-                    raise GeneralError(f"Cannot configure logging: {str(error)}") from error
+                    raise FotooboError(f"Cannot configure logging: {str(error)}") from error
 
                 except ImportError as error:
-                    raise GeneralError(f"Cannot configure logging: {str(error)}") from error
+                    raise FotooboError(f"Cannot configure logging: {str(error)}") from error
 
             # If the configuration file cannot be found or is empty
             else:
-                raise GeneralError(
+                raise FotooboError(
                     "Cannot configure logging: Configuration file "
                     f'"{config.logging["log_configuration_file"]}" not found or empty!'
                 )
@@ -164,7 +164,7 @@ class Log:
                 "INFO",
                 "DEBUG",
             ]:
-                raise GeneralWarning(f"Loglevel {log_level} not known")
+                raise FotooboWarning(f"Loglevel {log_level} not known")
 
             # If nothing is configured in the config file use a simple basic config
             if not config.logging:
@@ -225,7 +225,7 @@ class Log:
                             )
 
                         except (OSError, socket.gaierror) as error:
-                            raise GeneralError(
+                            raise FotooboError(
                                 f"Cannot configure SysLog logging: {str(error)}"
                             ) from error
 
@@ -262,7 +262,7 @@ class Log:
                             )
 
                         except (OSError, socket.gaierror) as error:
-                            raise GeneralError(
+                            raise FotooboError(
                                 f"Cannot configure SysLog logging: {str(error)}"
                             ) from error
 
